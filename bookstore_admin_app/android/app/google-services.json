@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "477678508086",
+    "project_id": "flutter-vscode-cab92",
+    "storage_bucket": "flutter-vscode-cab92.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:477678508086:android:4b189c7e2aff5d69ffa097",
+        "android_client_info": {
+          "package_name": "com.example.bookstore_admin_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCFn-0URfDn7dQvEuZLNlnmIJOPSjz5ayg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
