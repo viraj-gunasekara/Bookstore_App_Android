@@ -71,7 +71,86 @@ class _LoginPageState extends State<LoginPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  TextButton(onPressed: () {}, child: Text("Forget Password")),
+                  TextButton(
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (builder) {
+                          return AlertDialog(
+                            title: Text("Forget Password"),
+                            content: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text("Enter your email"),
+                                SizedBox(height: 10),
+                                TextFormField(
+                                  controller: _emailController,
+                                  decoration: InputDecoration(
+                                    label: Text("Email"),
+                                    border: OutlineInputBorder(),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: ()async{
+                                  if (_emailController.text.isEmpty) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text("Email cannot be empty"),
+                                      ),
+                                    );
+                                    return;
+                                  }
+                                  await AuthService()
+                                      .resetPassword(_emailController.text)
+                                      .then((value) {
+                                        if (value=="Mail Sent") {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                "Password reset link sent to your email",
+                                              ),
+                                            ),
+                                          );
+                                          Navigator.pop(context);
+                                        } else {
+                                          ScaffoldMessenger.of(
+                                            context,
+                                          ).showSnackBar(
+                                            SnackBar(
+                                              content: Text(
+                                                value,
+                                                style: TextStyle(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                              backgroundColor:
+                                                  Colors.red.shade400,
+                                            ),
+                                          );
+                                        }
+                                      });
+                                },
+                                child: Text("Submit"),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Text("Forget Password"),
+                  ),
                 ],
               ),
               SizedBox(height: 10),
