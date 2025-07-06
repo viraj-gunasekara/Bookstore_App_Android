@@ -36,7 +36,12 @@ class AuthService {
 
   //reset the password
   Future resetPassword(String email) async {
-    await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      return "Mail Sent";
+    } on FirebaseAuthException catch (e) {
+      return e.message.toString();
+    }
   }
 
   //check the user is logged in or out
