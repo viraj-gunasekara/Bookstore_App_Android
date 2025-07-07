@@ -52,6 +52,16 @@ class _BooksPageState extends State<BooksPage> {
                     ),
                   ],
                 ),
+                trailing: IconButton(
+                  icon: Icon(Icons.edit_outlined),
+                  onPressed: () {
+                    Navigator.pushNamed(
+                      context,
+                      "/add_book",
+                      arguments: books[index],
+                    );
+                  },
+                ),
               );
             },
           );

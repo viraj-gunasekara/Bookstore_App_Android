@@ -255,9 +255,10 @@ class _ModifyBookState extends State<ModifyBook> {
                         }
                       }
                     },
-                    child: Text("Add Book"),
+                    child: Text(bookId.isNotEmpty ? "Update Book" : "Add Book"),
                   ),
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),
