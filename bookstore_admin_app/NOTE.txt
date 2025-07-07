@@ -3,6 +3,42 @@
 2)Go to Authentication Section > Sign-in method
 3)Click Email/Password → Enable → Save
 
-#Issues
+##Cloud Firestore DB
+#Firestore Rule (only auth users can access db)
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if request.auth!=null;
+    }
+  }
+}
+
+#Provider for state management
+
+##Firebase storage furthermore cannot use without payment
+#Alternative to use: Cloudinary
+->Required Dependencies
+      flutter pub add http flutter_dotenv 
+->
+      Upload preset name: preset-for-file-upload
+      Signing mode: Unsigned
+      Asset folder: bookApp_uploads
+
+
+
+##Issues
 1)forget pw reset link - for random email also show as reset link sent. - Firebase returns "Mail sent" even for unknown emails — but the email never actually arrives. 
 *From the Firebase Docs: To prevent email enumeration, this method always returns success regardless of whether an email exists or not.
+
+
+##Testing-Data
+
+#dummy image: https://demofree.sirv.com/nope-not-here.jpg
+
+#Book categories & Priorites
+(f)Fantasy - 100
+(b)Biography - 50
+(m)Mystery - 60
+(sf)Science fiction - 90
+(k)Kids - 100
