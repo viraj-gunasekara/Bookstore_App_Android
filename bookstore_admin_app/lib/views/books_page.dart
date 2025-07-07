@@ -28,6 +28,11 @@ class _BooksPageState extends State<BooksPage> {
             itemCount: books.length,
             itemBuilder: (context, index) {
               return ListTile(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  "/view_book",
+                  arguments: books[index],
+                ),
                 leading: Container(
                   height: 50,
                   width: 50,
