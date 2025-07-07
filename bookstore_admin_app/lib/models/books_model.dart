@@ -35,7 +35,7 @@ class BooksModel {
     );
   }
 
-  // Convert List<QueryDocumentSnapshot> to List<ProductModel>
+  // Convert List<QueryDocumentSnapshot> to List<BooksModel>
   static List<BooksModel> fromJsonList(List<QueryDocumentSnapshot> list) {
     return list
         .map((e) => BooksModel.fromJson(e.data() as Map<String, dynamic>, e.id))

@@ -1,8 +1,10 @@
 import 'package:bookstore_admin_app/controlllers/auth_service.dart';
 import 'package:bookstore_admin_app/providers/admin_provider.dart';
 import 'package:bookstore_admin_app/views/admin_home.dart';
+import 'package:bookstore_admin_app/views/books_page.dart';
 import 'package:bookstore_admin_app/views/categories_page.dart';
 import 'package:bookstore_admin_app/views/login.dart';
+import 'package:bookstore_admin_app/views/modify_book.dart';
 import 'package:bookstore_admin_app/views/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
           "/signup": (context) => SignupPage(),
           "/home": (context) => AdminHome(),
           "/category": (context) => CategoriesPage(),
+          "/books": (context) => BooksPage(),
+          "/add_book": (context) => ModifyBook(),
         },
       ),
     );
