@@ -6,6 +6,7 @@ class DbService {
   Stream<QuerySnapshot> readCategories() {
     return FirebaseFirestore.instance
         .collection("book_categories")
+        .orderBy("priority", descending: true)
         .snapshots();
   }
 
@@ -15,8 +16,10 @@ class DbService {
   }
 
   // update category
-  Future updateCategories(
-      {required String docId, required Map<String, dynamic> data}) async {
+  Future updateCategories({
+    required String docId,
+    required Map<String, dynamic> data,
+  }) async {
     await FirebaseFirestore.instance
         .collection("book_categories")
         .doc(docId)
