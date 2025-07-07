@@ -8,10 +8,15 @@ class AdminProvider extends ChangeNotifier {
   List<QueryDocumentSnapshot> categories = [];
   StreamSubscription<QuerySnapshot>? _categorySubscription;
 
-  int totalCategories = 0;
+  List<QueryDocumentSnapshot> books = [];
+  StreamSubscription<QuerySnapshot>? _booksSubscription;
 
-  AdminProvider(){
+  int totalCategories = 0;
+  int totalBooks = 0;
+
+  AdminProvider() {
     getCategories();
+    getBooks();
   }
 
   //GET all the categories
@@ -19,9 +24,18 @@ class AdminProvider extends ChangeNotifier {
     _categorySubscription?.cancel();
     _categorySubscription = DbService().readCategories().listen((snapshot) {
       categories = snapshot.docs;
-      totalCategories=snapshot.docs.length;
+      totalCategories = snapshot.docs.length;
       notifyListeners();
     });
   }
 
+  // GET all the books
+  void getBooks() {
+    _booksSubscription?.cancel();
+    _booksSubscription = DbService().readBooks().listen((snapshot) {
+      books = snapshot.docs;
+      totalBooks = snapshot.docs.length;
+      notifyListeners();
+    });
+  }
 }
