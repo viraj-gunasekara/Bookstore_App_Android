@@ -14,7 +14,7 @@ class _BooksPageState extends State<BooksPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Books")),
+      appBar: AppBar(title: Text("All Books")),
       body: Consumer<AdminProvider>(
         builder: (context, value, child) {
           List<BooksModel> books =
@@ -45,6 +45,7 @@ class _BooksPageState extends State<BooksPage> {
                 ),
                 subtitle: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text("Rs. ${books[index].new_price.toString()}"),
                     Container(
@@ -52,7 +53,7 @@ class _BooksPageState extends State<BooksPage> {
                       color: Theme.of(context).primaryColor,
                       child: Text(
                         books[index].category.toUpperCase(),
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(color: Colors.white, fontSize: 10),
                       ),
                     ),
                   ],

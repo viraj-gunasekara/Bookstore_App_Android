@@ -1,3 +1,4 @@
+import 'package:bookstore_admin_app/constants/discount.dart';
 import 'package:bookstore_admin_app/models/books_model.dart';
 import 'package:flutter/material.dart';
 
@@ -59,6 +60,14 @@ class _ViewBookState extends State<ViewBook> {
                       SizedBox(width: 10),
                       // discount
                       Icon(Icons.arrow_downward, color: Colors.green, size: 20),
+                      Text(
+                        "${discountPercent(arguments.old_price, arguments.new_price)} %",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.green,
+                        ),
+                      ),
                     ],
                   ),
 
@@ -94,6 +103,37 @@ class _ViewBookState extends State<ViewBook> {
             ),
           ],
         ),
+      ),
+      //buttons
+      bottomNavigationBar: Row(
+        children: [
+          SizedBox(
+            height: 60,
+            width: MediaQuery.of(context).size.width * .5,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text("Add to Cart"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).primaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(),
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 60,
+            width: MediaQuery.of(context).size.width * .5,
+            child: ElevatedButton(
+              onPressed: () {},
+              child: Text("Buy Now"),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Theme.of(context).primaryColor,
+                shape: RoundedRectangleBorder(),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
