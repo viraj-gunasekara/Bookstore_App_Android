@@ -1,6 +1,8 @@
 import 'dart:io';
 
+import 'package:bookstore_admin_app/controlllers/db_service.dart';
 import 'package:bookstore_admin_app/controlllers/storage_service.dart';
+import 'package:bookstore_admin_app/models/books_model.dart';
 import 'package:bookstore_admin_app/providers/admin_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -43,10 +45,29 @@ class _ModifyBookState extends State<ModifyBook> {
     }
   }
 
+  // set the data from arguments
+  setData(BooksModel data) {
+    bookId = data.id;
+    nameController.text = data.name;
+    oldPriceController.text = data.old_price.toString();
+    newPriceController.text = data.new_price.toString();
+    quantityController.text = data.maxQuantity.toString();
+    categoryController.text = data.category;
+    descController.text = data.description;
+    imageController.text = data.image;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
+    final arguments = ModalRoute.of(context)!.settings.arguments;
+    if (arguments != null && arguments is BooksModel) {
+      setData(arguments);
+    }
     return Scaffold(
-      appBar: AppBar(title: Text("Modify Book")),
+      appBar: AppBar(
+        title: Text(bookId.isNotEmpty ? "Update Book" : "Add Book"),
+      ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -207,7 +228,33 @@ class _ModifyBookState extends State<ModifyBook> {
                   height: 60,
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        Map<String, dynamic> data = {
+                          "name": nameController.text,
+                          "old_price": int.parse(oldPriceController.text),
+                          "new_price": int.parse(newPriceController.text),
+                          "quantity": int.parse(quantityController.text),
+                          "category": categoryController.text,
+                          "desc": descController.text,
+                          "image": imageController.text,
+                        };
+
+                        if (bookId.isNotEmpty) {
+                          DbService().updateBook(docId: bookId, data: data);
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Book Updated")),
+                          );
+                        } else {
+                          DbService().createBook(data: data);
+                          Navigator.pop(context);
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text("Book Added")));
+                        }
+                      }
+                    },
                     child: Text("Add Book"),
                   ),
                 ),

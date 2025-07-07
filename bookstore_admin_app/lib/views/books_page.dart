@@ -28,12 +28,30 @@ class _BooksPageState extends State<BooksPage> {
             itemCount: books.length,
             itemBuilder: (context, index) {
               return ListTile(
+                leading: Container(
+                  height: 50,
+                  width: 50,
+                  child: Image.network(books[index].image),
+                ),
                 title: Text(
                   books[index].name,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
-                subtitle: Text("Rs. ${books[index].new_price.toString()}"),
+                subtitle: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text("Rs. ${books[index].new_price.toString()}"),
+                    Container(
+                      padding: EdgeInsets.all(4),
+                      color: Theme.of(context).primaryColor,
+                      child: Text(
+                        books[index].category.toUpperCase(),
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           );

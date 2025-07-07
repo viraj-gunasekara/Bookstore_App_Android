@@ -27,12 +27,12 @@ service cloud.firestore {
 
 
 
-##Issues
+#######################Issues#######################
 1)forget pw reset link - for random email also show as reset link sent. - Firebase returns "Mail sent" even for unknown emails — but the email never actually arrives. 
 *From the Firebase Docs: To prevent email enumeration, this method always returns success regardless of whether an email exists or not.
 
 
-##Testing-Data
+####################Testing-Data####################
 
 #dummy image: https://demofree.sirv.com/nope-not-here.jpg
 
@@ -42,3 +42,24 @@ service cloud.firestore {
 (m)Mystery - 60
 (sf)Science fiction - 90
 (k)Kids - 100
+
+#Add book
+*Book Name:
+1)Charlotte’s Web – E.B. White
+2)Ballet Shoes – Noel Streatfeild
+*Original Price:
+1)1980
+2)1560
+*Selling Price:
+1)1700
+2)1155
+*Qty Left:
+1)3
+2)2
+*Category:
+1)kids  (	Children’s )
+2)kids
+*Description:
+1)A beloved story of friendship and courage—Fern, a little girl, saves a runt pig named Wilbur, and Charlotte the spider weaves messages in her web.
+2)Follows the adventures of three adopted sisters—Pauline, Petrova, and Posy—as they train in acting and ballet in London. 
+*Image
