@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bookstore_admin_app/containers/additional_confirm.dart';
 import 'package:bookstore_admin_app/controlllers/db_service.dart';
 import 'package:bookstore_admin_app/controlllers/storage_service.dart';
 import 'package:bookstore_admin_app/models/categories_model.dart';
@@ -44,7 +45,55 @@ class _CategoriesPageState extends State<CategoriesPage> {
                         : categories[index].image,
                   ),
                 ),
-                onTap: () {},
+                onTap: () {
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: Text("Choose what action to do"),
+                      content: Text("Delete action cannot be undone"),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (context) => AdditionalConfirm(
+                                contentText:
+                                    "Are you sure you want to delete this",
+                                onYes: () {
+                                  DbService().deleteCategories(
+                                    docId: categories[index].id,
+                                  );
+                                  Navigator.pop(context);
+                                },
+                                onNo: () {
+                                  Navigator.pop(context);
+                                },
+                              ),
+                            );
+                          },
+                          child: Text("Delete Category"),
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                            showDialog(
+                              context: context,
+                              builder: (context) => ModifyCategory(
+                                isUpdating: true,
+                                categoryId: categories[index].id,
+                                priority: categories[index].priority,
+                                image: categories[index].image,
+                                name: categories[index].name,
+                              ),
+                            );
+                          },
+                          child: Text("Update Category"),
+                        ),
+                      ],
+                    ),
+                  );
+                },
                 title: Text(
                   categories[index].name,
                   maxLines: 2,
@@ -193,7 +242,7 @@ class _ModifyCategoryState extends State<ModifyCategory> {
                         : SizedBox()
                   : Container(
                       margin: EdgeInsets.all(20),
-                      height: 200,
+                      height: 150,
                       width: double.infinity,
                       color: Colors.deepPurple.shade50,
                       child: Image.file(File(image!.path), fit: BoxFit.contain),

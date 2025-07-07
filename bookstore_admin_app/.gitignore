@@ -1,6 +1,5 @@
 #VScode
 .vscode/
-.env
 
 # Miscellaneous
 *.class

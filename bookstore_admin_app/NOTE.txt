@@ -33,6 +33,9 @@ service cloud.firestore {
 
 
 ##Testing-Data
+
+#dummy image: https://demofree.sirv.com/nope-not-here.jpg
+
 #Book categories & Priorites
 (f)Fantasy - 100
 (b)Biography - 50
