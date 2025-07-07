@@ -16,13 +16,26 @@ service cloud.firestore {
 
 #Provider for state management
 
+##Firebase storage furthermore cannot use without payment
+#Alternative to use: Cloudinary
+->Required Dependencies
+      flutter pub add http flutter_dotenv 
+->
+      Upload preset name: preset-for-file-upload
+      Signing mode: Unsigned
+      Asset folder: bookApp_uploads
 
 
 
-
-
-
-
-#Issues
+##Issues
 1)forget pw reset link - for random email also show as reset link sent. - Firebase returns "Mail sent" even for unknown emails — but the email never actually arrives. 
 *From the Firebase Docs: To prevent email enumeration, this method always returns success regardless of whether an email exists or not.
+
+
+##Testing-Data
+#Book categories & Priorites
+(f)Fantasy - 100
+(b)Biography - 50
+(m)Mystery - 60
+(sf)Science fiction - 90
+(k)Kids - 100

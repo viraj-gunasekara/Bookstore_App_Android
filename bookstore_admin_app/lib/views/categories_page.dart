@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:bookstore_admin_app/controlllers/db_service.dart';
+import 'package:bookstore_admin_app/controlllers/storage_service.dart';
 import 'package:bookstore_admin_app/models/categories_model.dart';
 import 'package:bookstore_admin_app/providers/admin_provider.dart';
 import 'package:flutter/material.dart';
@@ -30,12 +34,38 @@ class _CategoriesPageState extends State<CategoriesPage> {
             itemCount: value.categories.length,
             itemBuilder: (context, index) {
               return ListTile(
+                leading: Container(
+                  height: 50,
+                  width: 50,
+                  child: Image.network(
+                    categories[index].image == null ||
+                            categories[index].image == ""
+                        ? "https://demofree.sirv.com/nope-not-here.jpg"
+                        : categories[index].image,
+                  ),
+                ),
+                onTap: () {},
                 title: Text(
                   categories[index].name,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
                 subtitle: Text("Priority : ${categories[index].priority}"),
+                trailing: IconButton(
+                  icon: Icon(Icons.edit_outlined),
+                  onPressed: () {
+                    showDialog(
+                      context: context,
+                      builder: (context) => ModifyCategory(
+                        isUpdating: true,
+                        categoryId: categories[index].id,
+                        priority: categories[index].priority,
+                        image: categories[index].image,
+                        name: categories[index].name,
+                      ),
+                    );
+                  },
+                ),
               );
             },
           );
@@ -92,6 +122,23 @@ class _ModifyCategoryState extends State<ModifyCategory> {
     super.initState();
   }
 
+  // function to pick image using image picker
+  Future<void> pickImage() async {
+    image = await picker.pickImage(source: ImageSource.gallery);
+    if (image != null) {
+      String? res = await StorageService().uploadImage(image!.path, context);
+      setState(() {
+        if (res != null) {
+          imageController.text = res;
+          print("set image url ${res} : ${imageController.text}");
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Image uploaded successfully")),
+          );
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -131,7 +178,33 @@ class _ModifyCategoryState extends State<ModifyCategory> {
               ),
               SizedBox(height: 10),
 
-              ElevatedButton(onPressed: () {}, child: Text("Pick Image")),
+              image == null
+                  ? imageController.text.isNotEmpty
+                        ? Container(
+                            margin: EdgeInsets.all(20),
+                            height: 100,
+                            width: double.infinity,
+                            color: Colors.deepPurple.shade50,
+                            child: Image.network(
+                              imageController.text,
+                              fit: BoxFit.contain,
+                            ),
+                          )
+                        : SizedBox()
+                  : Container(
+                      margin: EdgeInsets.all(20),
+                      height: 200,
+                      width: double.infinity,
+                      color: Colors.deepPurple.shade50,
+                      child: Image.file(File(image!.path), fit: BoxFit.contain),
+                    ),
+
+              ElevatedButton(
+                onPressed: () {
+                  pickImage();
+                },
+                child: Text("Pick Image"),
+              ),
               SizedBox(height: 10),
               TextFormField(
                 controller: imageController,
@@ -147,6 +220,46 @@ class _ModifyCategoryState extends State<ModifyCategory> {
           ),
         ),
       ),
+      actions: [
+        TextButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          child: Text("Cancel"),
+        ),
+        TextButton(
+          onPressed: () async {
+            if (formKey.currentState!.validate()) {
+              if (widget.isUpdating) {
+                await DbService().updateCategories(
+                  docId: widget.categoryId,
+                  data: {
+                    "name": categoryController.text.toLowerCase(),
+                    "image": imageController.text,
+                    "priority": int.parse(priorityController.text),
+                  },
+                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text("Category Updated")));
+              } else {
+                await DbService().createCategories(
+                  data: {
+                    "name": categoryController.text.toLowerCase(),
+                    "image": imageController.text,
+                    "priority": int.parse(priorityController.text),
+                  },
+                );
+                ScaffoldMessenger.of(
+                  context,
+                ).showSnackBar(SnackBar(content: Text("Category Added")));
+              }
+              Navigator.pop(context);
+            }
+          },
+          child: Text(widget.isUpdating ? "Update" : "Add"),
+        ),
+      ],
     );
   }
 }
