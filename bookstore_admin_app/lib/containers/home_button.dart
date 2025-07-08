@@ -1,31 +1,27 @@
 import 'package:flutter/material.dart';
 
-class HomeButton extends StatefulWidget {
+class HomeButton extends StatelessWidget {
   final String name;
   final VoidCallback onTap;
+
   const HomeButton({super.key, required this.name, required this.onTap});
 
   @override
-  State<HomeButton> createState() => _HomeButtonState();
-}
-
-class _HomeButtonState extends State<HomeButton> {
-  @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: widget.onTap,
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(12),
       child: Container(
-        height: 65,
-        width: MediaQuery.of(context).size.width * .42,
-        margin: EdgeInsets.all(10),
+        padding: const EdgeInsets.symmetric(vertical: 20),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
           color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Center(
           child: Text(
-            widget.name,
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            name,
+            style: const TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.w500),
+            textAlign: TextAlign.center,
           ),
         ),
       ),
