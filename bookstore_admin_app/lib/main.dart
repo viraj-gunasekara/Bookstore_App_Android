@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       builder: (context, child) => MaterialApp(
         title: 'Bookstore Admin App',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.indigo.shade900),
         ),
         routes: {
           "/": (context) => CheckUser(),
