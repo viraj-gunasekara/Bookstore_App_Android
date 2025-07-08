@@ -17,16 +17,13 @@ class _PromoBannersPageState extends State<PromoBannersPage> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!_isInitialized) {
         final arguments = ModalRoute.of(context)?.settings.arguments;
         if (arguments != null && arguments is Map<String, dynamic>) {
           _isPromo = arguments['promo'] ?? true;
         }
-        print("promo $_isPromo");
         _isInitialized = true;
-        print("is initialized $_isInitialized");
         setState(() {});
       }
     });
@@ -35,7 +32,7 @@ class _PromoBannersPageState extends State<PromoBannersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(_isPromo ? "Book Promotions" : "Book Banners")),
+      appBar: AppBar(title: Text(_isPromo ? "📢 Book Promotions" : "🖼 Book Banners")),
       body: _isInitialized
           ? StreamBuilder(
               stream: DbService().readPromos(_isPromo),
@@ -48,18 +45,18 @@ class _PromoBannersPageState extends State<PromoBannersPage> {
                   }
 
                   return ListView.builder(
+                    padding: const EdgeInsets.all(12),
                     itemCount: promos.length,
                     itemBuilder: (context, index) {
-                      return ListTile(
+                      final promo = promos[index];
+
+                      return GestureDetector(
                         onTap: () {
-
-
-
                           showDialog(
                             context: context,
                             builder: (context) => AlertDialog(
-                              title: Text("Choose what action to do"),
-                              content: Text("Delete action cannot be undone"),
+                              title: const Text("Choose an Action"),
+                              content: const Text("Delete action cannot be undone"),
                               actions: [
                                 TextButton(
                                   onPressed: () {
@@ -67,56 +64,115 @@ class _PromoBannersPageState extends State<PromoBannersPage> {
                                     showDialog(
                                       context: context,
                                       builder: (context) => AdditionalConfirm(
-                                        contentText: "Are you sure you want to delete this",
+                                        contentText: "Are you sure you want to delete this?",
                                         onYes: () {
-                                          DbService().deletePromos(id: promos[index].id, isPromo: _isPromo);
+                                          DbService().deletePromos(id: promo.id, isPromo: _isPromo);
                                           Navigator.pop(context);
                                         },
-                                        onNo: () {
-                                          Navigator.pop(context);
-                                        },
+                                        onNo: () => Navigator.pop(context),
                                       ),
                                     );
                                   },
-                                  child: Text("Delete ${_isPromo?"Promo":"Banner"}"),
+                                  child: Text("Delete ${_isPromo ? "Promo" : "Banner"}"),
                                 ),
                                 TextButton(
                                   onPressed: () {
                                     Navigator.pop(context);
-                                    Navigator.pushNamed(context, "/update_promo", arguments: {"promo": _isPromo, "detail": promos[index]});
+                                    Navigator.pushNamed(
+                                      context,
+                                      "/update_promo",
+                                      arguments: {"promo": _isPromo, "detail": promo},
+                                    );
                                   },
-                                  child: Text("Update ${_isPromo?"Promo":"Banner"}"),
+                                  child: Text("Update ${_isPromo ? "Promo" : "Banner"}"),
                                 ),
                               ],
                             ),
                           );
-
-
-
-                          
                         },
-                        leading: Container(height: 50, width: 50, child: Image.network(promos[index].image)),
-                        title: Text(promos[index].title, maxLines: 2, overflow: TextOverflow.ellipsis),
-                        subtitle: Text(promos[index].category),
-                        trailing: IconButton(
-                          icon: Icon(Icons.edit_outlined),
-                          onPressed: () {
-                            Navigator.pushNamed(context, "/update_promo", arguments: {"promo": _isPromo, "detail": promos[index]});
-                          },
+                        child: Container(
+                          margin: const EdgeInsets.only(bottom: 16),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(12),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.08),
+                                blurRadius: 6,
+                                spreadRadius: 1,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          child: Row(
+                            children: [
+                              // 📸 Promo image
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(8),
+                                child: Image.network(
+                                  promo.image,
+                                  height: 60,
+                                  width: 60,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) => Container(
+                                    height: 60,
+                                    width: 60,
+                                    color: Colors.grey.shade300,
+                                    child: const Icon(Icons.broken_image),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 12),
+
+                              // 📝 Promo/Banner Info
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      promo.title,
+                                      maxLines: 2,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      promo.category,
+                                      style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                                    ),
+                                  ],
+                                ),
+                              ),
+
+                              // ✏️ Edit button
+                              IconButton(
+                                icon: const Icon(Icons.edit_outlined),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    "/update_promo",
+                                    arguments: {"promo": _isPromo, "detail": promo},
+                                  );
+                                },
+                              ),
+                            ],
+                          ),
                         ),
                       );
                     },
                   );
                 }
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               },
             )
-          : SizedBox(),
-      floatingActionButton: FloatingActionButton(
+          : const SizedBox(),
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.pushNamed(context, "/update_promo", arguments: {"promo": _isPromo});
         },
-        child: Icon(Icons.add),
+        label: Text("Add ${_isPromo ? "Promo" : "Banner"}"),
+        icon: const Icon(Icons.add),
       ),
     );
   }

@@ -20,37 +20,28 @@ class _CategoriesPageState extends State<CategoriesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Categories")),
+      appBar: AppBar(title: const Text("📁 Categories")),
       body: Consumer<AdminProvider>(
-        builder: (context, value, child) {
-          List<CategoriesModel> categories = CategoriesModel.fromJsonList(
-            value.categories,
-          );
+        builder: (context, provider, child) {
+          List<CategoriesModel> categories = CategoriesModel.fromJsonList(provider.categories);
 
-          if (value.categories.isEmpty) {
-            return Center(child: Text("No Categories Found"));
+          if (categories.isEmpty) {
+            return const Center(child: Text("No Categories Found"));
           }
 
           return ListView.builder(
-            itemCount: value.categories.length,
+            padding: const EdgeInsets.all(12),
+            itemCount: categories.length,
             itemBuilder: (context, index) {
-              return ListTile(
-                leading: Container(
-                  height: 50,
-                  width: 50,
-                  child: Image.network(
-                    categories[index].image == null ||
-                            categories[index].image == ""
-                        ? "https://demofree.sirv.com/nope-not-here.jpg"
-                        : categories[index].image,
-                  ),
-                ),
+              final category = categories[index];
+
+              return GestureDetector(
                 onTap: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text("Choose what action to do"),
-                      content: Text("Delete action cannot be undone"),
+                      title: const Text("Choose Action"),
+                      content: const Text("Delete action cannot be undone"),
                       actions: [
                         TextButton(
                           onPressed: () {
@@ -58,21 +49,16 @@ class _CategoriesPageState extends State<CategoriesPage> {
                             showDialog(
                               context: context,
                               builder: (context) => AdditionalConfirm(
-                                contentText:
-                                    "Are you sure you want to delete this",
+                                contentText: "Are you sure you want to delete this?",
                                 onYes: () {
-                                  DbService().deleteCategories(
-                                    docId: categories[index].id,
-                                  );
+                                  DbService().deleteCategories(docId: category.id);
                                   Navigator.pop(context);
                                 },
-                                onNo: () {
-                                  Navigator.pop(context);
-                                },
+                                onNo: () => Navigator.pop(context),
                               ),
                             );
                           },
-                          child: Text("Delete Category"),
+                          child: const Text("🗑 Delete"),
                         ),
                         TextButton(
                           onPressed: () {
@@ -81,58 +67,118 @@ class _CategoriesPageState extends State<CategoriesPage> {
                               context: context,
                               builder: (context) => ModifyCategory(
                                 isUpdating: true,
-                                categoryId: categories[index].id,
-                                priority: categories[index].priority,
-                                image: categories[index].image,
-                                name: categories[index].name,
+                                categoryId: category.id,
+                                name: category.name,
+                                image: category.image,
+                                priority: category.priority,
                               ),
                             );
                           },
-                          child: Text("Update Category"),
+                          child: const Text("✏️ Update"),
                         ),
                       ],
                     ),
                   );
                 },
-                title: Text(
-                  categories[index].name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Text("Priority : ${categories[index].priority}"),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit_outlined),
-                  onPressed: () {
-                    showDialog(
-                      context: context,
-                      builder: (context) => ModifyCategory(
-                        isUpdating: true,
-                        categoryId: categories[index].id,
-                        priority: categories[index].priority,
-                        image: categories[index].image,
-                        name: categories[index].name,
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.08),
+                        blurRadius: 6,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 3),
                       ),
-                    );
-                  },
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      // 🖼️ Category image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          (category.image == null || category.image!.isEmpty)
+                              ? "https://demofree.sirv.com/nope-not-here.jpg"
+                              : category.image!,
+                          height: 60,
+                          width: 60,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            height: 60,
+                            width: 60,
+                            color: Colors.grey.shade300,
+                            child: const Icon(Icons.broken_image),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+
+                      // 📝 Details
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              category.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 6),
+                            Text(
+                              "Priority: ${category.priority}",
+                              style: TextStyle(fontSize: 13, color: Colors.grey.shade600),
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // ✏️ Edit icon
+                      IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: () {
+                          showDialog(
+                            context: context,
+                            builder: (context) => ModifyCategory(
+                              isUpdating: true,
+                              categoryId: category.id,
+                              name: category.name,
+                              image: category.image,
+                              priority: category.priority,
+                            ),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) =>
-                ModifyCategory(isUpdating: false, categoryId: "", priority: 0),
+            builder: (context) => ModifyCategory(
+              isUpdating: false,
+              categoryId: "",
+              priority: 0,
+            ),
           );
         },
-        child: Icon(Icons.add),
+        label: const Text("Add Category"),
+        icon: const Icon(Icons.add),
       ),
     );
   }
 }
+
 
 class ModifyCategory extends StatefulWidget {
   final bool isUpdating;

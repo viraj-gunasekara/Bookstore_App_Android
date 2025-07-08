@@ -169,26 +169,55 @@ class _AdminHomeState extends State<AdminHome> {
 
             const SizedBox(height: 24),
             // 📦 Admin Control Buttons - Changed from Rows to GridView
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 16,
-              crossAxisSpacing: 16,
-              childAspectRatio: 2.6, // ✅ Makes each button wider (more like dashboard cards)
-              children: [
-                HomeButton(name: "All Books", onTap: () => Navigator.pushNamed(context, "/books")),
-                HomeButton(name: "Categories", onTap: () => Navigator.pushNamed(context, "/category")),
-                HomeButton(
-                  name: "Promotions",
-                  onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": true}),
-                ),
-                HomeButton(
-                  name: "Banners",
-                  onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": false}),
-                ),
-              ],
-            ),
+            Column(
+  children: [
+    // 2-column grid for remaining buttons
+    GridView.count(
+      crossAxisCount: 2,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      mainAxisSpacing: 16,
+      crossAxisSpacing: 16,
+      childAspectRatio: 2.6,
+      children: [
+        HomeButton(
+          name: "All Books",
+          icon: Icons.menu_book_outlined,
+          onTap: () => Navigator.pushNamed(context, "/books"),
+        ),
+        HomeButton(
+          name: "Categories",
+          icon: Icons.category_outlined,
+          onTap: () => Navigator.pushNamed(context, "/category"),
+        ),
+        HomeButton(
+          name: "Promotions",
+          icon: Icons.campaign_outlined,
+          onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": true}),
+        ),
+        HomeButton(
+          name: "Banners",
+          icon: Icons.image_outlined,
+          onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": false}),
+        ),
+      ],
+    ),
+
+    // Full-width Book Orders button
+    Container(
+      margin: const EdgeInsets.only(top: 16),
+      width: double.infinity,
+      child: HomeButton(
+        name: "Book Orders",
+        icon: Icons.format_list_bulleted,
+        onTap: () => Navigator.pushNamed(context, "/orders"),
+        backgroundColor: Colors.grey.shade800,
+      ),
+    ),
+    const SizedBox(height: 5),
+  ],
+)
+
           ],
         ),
       ),
@@ -198,7 +227,7 @@ class _AdminHomeState extends State<AdminHome> {
   // 🧩 Modern Dashboard Metric Card - FIXED SIZE
   Widget _buildDashboardCard(BuildContext context, {required String title, required String value, required IconData icon, required Color color}) {
     return SizedBox(
-      height: 130,
+      height: 100,
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
@@ -218,7 +247,7 @@ class _AdminHomeState extends State<AdminHome> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(value, style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                  Text(value, style: const TextStyle(fontSize: 19, fontWeight: FontWeight.bold)),
                   Text(title, style: TextStyle(fontSize: 14, color: Colors.grey.shade700)),
                 ],
               ),
