@@ -16,26 +16,35 @@ class _BooksPageState extends State<BooksPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("All Books")),
+      appBar: AppBar(title: const Text("📘 All Books")),
       body: Consumer<AdminProvider>(
-        builder: (context, value, child) {
-          List<BooksModel> books =
-              BooksModel.fromJsonList(value.books) as List<BooksModel>;
+        builder: (context, provider, child) {
+          List<BooksModel> books = BooksModel.fromJsonList(provider.books);
 
           if (books.isEmpty) {
-            return Center(child: Text("No Books Found"));
+            return const Center(
+              child: Text("📭 No Books Found"),
+            );
           }
 
           return ListView.builder(
+            padding: const EdgeInsets.all(12),
             itemCount: books.length,
             itemBuilder: (context, index) {
-              return ListTile(
+              final book = books[index];
+
+              return GestureDetector(
+                onTap: () => Navigator.pushNamed(
+                  context,
+                  "/view_book",
+                  arguments: book,
+                ),
                 onLongPress: () {
                   showDialog(
                     context: context,
                     builder: (context) => AlertDialog(
-                      title: Text("Choose what action to do"),
-                      content: Text("Delete cannot be undone"),
+                      title: const Text("Choose Action"),
+                      content: const Text("Delete cannot be undone."),
                       actions: [
                         TextButton(
                           onPressed: () {
@@ -43,12 +52,9 @@ class _BooksPageState extends State<BooksPage> {
                             showDialog(
                               context: context,
                               builder: (context) => AdditionalConfirm(
-                                contentText:
-                                    "Are you sure you want to delete this book",
+                                contentText: "Are you sure you want to delete this book?",
                                 onYes: () {
-                                  DbService().deleteBook(
-                                    docId: books[index].id,
-                                  );
+                                  DbService().deleteBook(docId: book.id);
                                   Navigator.pop(context);
                                 },
                                 onNo: () {
@@ -57,7 +63,7 @@ class _BooksPageState extends State<BooksPage> {
                               ),
                             );
                           },
-                          child: Text("Delete Book"),
+                          child: const Text("🗑 Delete"),
                         ),
                         TextButton(
                           onPressed: () {
@@ -65,54 +71,103 @@ class _BooksPageState extends State<BooksPage> {
                             Navigator.pushNamed(
                               context,
                               "/add_book",
-                              arguments: books[index],
+                              arguments: book,
                             );
                           },
-                          child: Text("Edit Book"),
+                          child: const Text("✏️ Edit"),
                         ),
                       ],
                     ),
                   );
                 },
-                onTap: () => Navigator.pushNamed(
-                  context,
-                  "/view_book",
-                  arguments: books[index],
-                ),
-                leading: Container(
-                  height: 50,
-                  width: 50,
-                  child: Image.network(books[index].image),
-                ),
-                title: Text(
-                  books[index].name,
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                subtitle: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    Text("Rs. ${books[index].new_price.toString()}"),
-                    Container(
-                      padding: EdgeInsets.all(4),
-                      color: Theme.of(context).primaryColor,
-                      child: Text(
-                        books[index].category.toUpperCase(),
-                        style: TextStyle(color: Colors.white, fontSize: 10),
+                child: Container(
+                  margin: const EdgeInsets.only(bottom: 16),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.grey.withOpacity(0.08),
+                        blurRadius: 6,
+                        spreadRadius: 1,
+                        offset: const Offset(0, 3),
                       ),
-                    ),
-                  ],
-                ),
-                trailing: IconButton(
-                  icon: Icon(Icons.edit_outlined),
-                  onPressed: () {
-                    Navigator.pushNamed(
-                      context,
-                      "/add_book",
-                      arguments: books[index],
-                    );
-                  },
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      // 📷 Book image
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          book.image,
+                          height: 70,
+                          width: 55,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            height: 70,
+                            width: 55,
+                            color: Colors.grey.shade300,
+                            child: const Icon(Icons.broken_image),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 12),
+
+                      // 📖 Book details
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              book.name,
+                              maxLines: 2,
+                              overflow: TextOverflow.ellipsis,
+                              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                            ),
+                            const SizedBox(height: 6),
+                            Row(
+                              children: [
+                                Text(
+                                  "Rs. ${book.new_price}",
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.green,
+                                  ),
+                                ),
+                                const SizedBox(width: 10),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    book.category.toUpperCase(),
+                                    style: const TextStyle(fontSize: 10, color: Colors.white),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+
+                      // ✏️ Edit Icon
+                      IconButton(
+                        icon: const Icon(Icons.edit_outlined),
+                        onPressed: () {
+                          Navigator.pushNamed(
+                            context,
+                            "/add_book",
+                            arguments: book,
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               );
             },
@@ -120,11 +175,11 @@ class _BooksPageState extends State<BooksPage> {
         },
       ),
 
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.pushNamed(context, "/add_book");
-        },
+      // ➕ Floating button to add book
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () => Navigator.pushNamed(context, "/add_book"),
+        label: const Text("Add Book"),
+        icon: const Icon(Icons.add),
       ),
     );
   }
