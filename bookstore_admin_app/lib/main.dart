@@ -5,6 +5,8 @@ import 'package:bookstore_admin_app/views/books_page.dart';
 import 'package:bookstore_admin_app/views/categories_page.dart';
 import 'package:bookstore_admin_app/views/login.dart';
 import 'package:bookstore_admin_app/views/modify_book.dart';
+import 'package:bookstore_admin_app/views/modify_promo.dart';
+import 'package:bookstore_admin_app/views/promo_banners_page.dart';
 import 'package:bookstore_admin_app/views/signup.dart';
 import 'package:bookstore_admin_app/views/view_book.dart';
 import 'package:flutter/material.dart';
@@ -41,6 +43,8 @@ class MyApp extends StatelessWidget {
           "/books": (context) => BooksPage(),
           "/add_book": (context) => ModifyBook(),
           "/view_book": (context) => ViewBook(),
+          "/promos": (context) => PromoBannersPage(),
+          "/update_promo": (context) => ModifyPromo(),
         },
       ),
     );
