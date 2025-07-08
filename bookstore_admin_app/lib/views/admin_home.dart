@@ -46,11 +46,11 @@ class _AdminHomeState extends State<AdminHome> {
             Row(
               children: [
                 Expanded(
-                  child: _buildDashboardCard(context, title: "Total Categories", value: "${provider.categories.length}", icon: Icons.category_outlined, color: Colors.brown.shade500),
+                  child: _buildDashboardCard(context, title: "Categories", value: "${provider.categories.length}", icon: Icons.now_widgets_outlined, color: Colors.deepOrange.shade500),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
-                  child: _buildDashboardCard(context, title: "Total Books Count", value: "${provider.books.length}", icon: Icons.menu_book_outlined, color: Colors.purple.shade900),
+                  child: _buildDashboardCard(context, title: "Books Count", value: "${provider.books.length}", icon: Icons.menu_book_outlined, color: Colors.blue.shade900),
                 ),
               ],
             ),
@@ -59,9 +59,9 @@ class _AdminHomeState extends State<AdminHome> {
             //Graph show Number of books per category
             // 📊 Pie Chart for Books by Category
             Container(
-              height: 280,
+              height: 300,
               margin: const EdgeInsets.symmetric(vertical: 16),
-              padding: const EdgeInsets.all(16),
+              padding: const EdgeInsets.all(2),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(16),
@@ -101,14 +101,14 @@ class _AdminHomeState extends State<AdminHome> {
                         child: Row(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.only(left: 16),
+                              padding: const EdgeInsets.only(left: 28),
                               child: SizedBox(
                                 width: 140,
                                 height: 140,
                                 child: PieChart(
                                   PieChartData(
                                     sectionsSpace: 2,
-                                    centerSpaceRadius: 38,
+                                    centerSpaceRadius: 36,
                                     sections: coloredEntries.map((entry) {
                                       final percentage = (entry.count / totalBooks * 100).toStringAsFixed(1);
                                       return PieChartSectionData(
@@ -167,57 +167,43 @@ class _AdminHomeState extends State<AdminHome> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
             // 📦 Admin Control Buttons - Changed from Rows to GridView
             Column(
-  children: [
-    // 2-column grid for remaining buttons
-    GridView.count(
-      crossAxisCount: 2,
-      shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
-      mainAxisSpacing: 16,
-      crossAxisSpacing: 16,
-      childAspectRatio: 2.6,
-      children: [
-        HomeButton(
-          name: "All Books",
-          icon: Icons.menu_book_outlined,
-          onTap: () => Navigator.pushNamed(context, "/books"),
-        ),
-        HomeButton(
-          name: "Categories",
-          icon: Icons.category_outlined,
-          onTap: () => Navigator.pushNamed(context, "/category"),
-        ),
-        HomeButton(
-          name: "Promotions",
-          icon: Icons.campaign_outlined,
-          onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": true}),
-        ),
-        HomeButton(
-          name: "Banners",
-          icon: Icons.image_outlined,
-          onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": false}),
-        ),
-      ],
-    ),
+              children: [
+                // 2-column grid for remaining buttons
+                GridView.count(
+                  crossAxisCount: 2,
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  mainAxisSpacing: 16,
+                  crossAxisSpacing: 16,
+                  childAspectRatio: 2.6,
+                  children: [
+                    HomeButton(name: "All Books", icon: Icons.menu_book_outlined, onTap: () => Navigator.pushNamed(context, "/books")),
+                    HomeButton(name: "Categories", icon: Icons.now_widgets_outlined, onTap: () => Navigator.pushNamed(context, "/category")),
+                    HomeButton(
+                      name: "Promotions",
+                      icon: Icons.campaign_outlined,
+                      onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": true}),
+                    ),
+                    HomeButton(
+                      name: "Banners",
+                      icon: Icons.image_outlined,
+                      onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": false}),
+                    ),
+                  ],
+                ),
 
-    // Full-width Book Orders button
-    Container(
-      margin: const EdgeInsets.only(top: 16),
-      width: double.infinity,
-      child: HomeButton(
-        name: "Book Orders",
-        icon: Icons.format_list_bulleted,
-        onTap: () => Navigator.pushNamed(context, "/orders"),
-        backgroundColor: Colors.grey.shade800,
-      ),
-    ),
-    const SizedBox(height: 5),
-  ],
-)
-
+                // Full-width Book Orders button
+                Container(
+                  margin: const EdgeInsets.only(top: 16),
+                  width: double.infinity,
+                  child: HomeButton(name: "Book Orders", icon: Icons.format_list_bulleted, onTap: () => Navigator.pushNamed(context, "/orders"), backgroundColor: Colors.grey.shade800),
+                ),
+                const SizedBox(height: 5),
+              ],
+            ),
           ],
         ),
       ),
@@ -227,7 +213,7 @@ class _AdminHomeState extends State<AdminHome> {
   // 🧩 Modern Dashboard Metric Card - FIXED SIZE
   Widget _buildDashboardCard(BuildContext context, {required String title, required String value, required IconData icon, required Color color}) {
     return SizedBox(
-      height: 100,
+      height: 80,
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
