@@ -34,8 +34,23 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
           ),
+          SizedBox(height: 20,),
+      ListTile(title: Text("Orders"), leading: Icon(Icons.local_shipping_outlined), onTap: (){
+        
+
+      },),
+      Divider( thickness: 1,  endIndent:  10, indent: 10,),
+      ListTile(title: Text("Discount & Offers"), leading: Icon(Icons.discount_outlined), onTap: (){
+       
+      },),
+      Divider( thickness: 1,  endIndent:  10, indent: 10,),
+      ListTile(title: Text("Help & Support"), leading: Icon(Icons.support_agent), onTap: (){
+       ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("Mail us at thebookstore@gmail.com")));
+      },),
+          Divider( thickness: 1,  endIndent:  10, indent: 10,),
           ListTile(
             title: Text("Logout"),
+            leading: Icon(Icons.logout_outlined),
             onTap: () async {
               await AuthService().logout();
               Navigator.pushNamedAndRemoveUntil(context, "/login", (route) => true);
