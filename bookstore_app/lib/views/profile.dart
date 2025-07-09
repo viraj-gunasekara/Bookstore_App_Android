@@ -1,5 +1,7 @@
 import 'package:bookstore_app/controlllers/auth_service.dart';
+import 'package:bookstore_app/providers/user_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -19,7 +21,19 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Column(
         children: [
-          Card(child: ListTile(title: Text("Test user"))),
+          Consumer<UserProvider>(
+            builder: (context, value, child) =>
+            Card(
+              child: ListTile(
+                title: Text(value.name),
+                subtitle: Text(value.email),
+                onTap: () {
+                  Navigator.pushNamed(context, "/update_profile");
+                },
+                trailing: Icon(Icons.manage_accounts_outlined),
+              ),
+            ),
+          ),
           ListTile(
             title: Text("Logout"),
             onTap: () async {
