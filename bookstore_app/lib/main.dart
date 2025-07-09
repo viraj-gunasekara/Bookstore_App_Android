@@ -1,6 +1,7 @@
 import 'package:bookstore_app/controlllers/auth_service.dart';
 import 'package:bookstore_app/firebase_options.dart';
 import 'package:bookstore_app/views/home.dart';
+import 'package:bookstore_app/views/home_nav.dart';
 import 'package:bookstore_app/views/login.dart';
 import 'package:bookstore_app/views/signup.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -40,13 +41,13 @@ class MyApp extends StatelessWidget {
         //
         // This works for code too, not just values: Most code changes can be
         // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
       ),
       routes: {
         "/": (context) => CheckUser(),
         "/login": (context) => LoginPage(),
         "/signup": (context) => SignupPage(),
-        "/home": (context) => HomePage(),
+        "/home": (context) => HomeNav(),
       },
     );
   }

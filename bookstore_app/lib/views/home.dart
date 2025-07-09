@@ -11,7 +11,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Home"),  scrolledUnderElevation: 0, forceMaterialTransparency: true,)
+      appBar: AppBar(title: Text("Best Deals",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),  scrolledUnderElevation: 0, forceMaterialTransparency: true,)
     );
   }
 }
