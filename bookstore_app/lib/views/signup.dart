@@ -11,6 +11,7 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final formKey = GlobalKey<FormState>();
 
+  TextEditingController _nameController = TextEditingController();
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
 
@@ -36,6 +37,18 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                     ),
                     Text("Create a new account and get started"),
+                    SizedBox(height: 10),
+                    SizedBox(
+                    width: MediaQuery.of(context).size.width * .9,
+                    child: TextFormField(
+                      validator: (value) =>
+                          value!.isEmpty ? "Name cannot be empty." : null,
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        border: OutlineInputBorder(),
+                        label: Text("Name"),
+                      ),
+                    )),
                     SizedBox(height: 10),
                     SizedBox(
                       width: MediaQuery.of(context).size.width * .9,
@@ -76,6 +89,7 @@ class _SignupPageState extends State<SignupPage> {
                     if (formKey.currentState!.validate()) {
                       AuthService()
                           .createAccountWithEmail(
+                            _nameController.text,
                             _emailController.text,
                             _passwordController.text,
                           )
@@ -103,6 +117,10 @@ class _SignupPageState extends State<SignupPage> {
                           });
                     }
                   },
+                  style:  ElevatedButton.styleFrom(
+                          backgroundColor: Theme.of(context).primaryColor,
+                          foregroundColor: Colors.white
+                        ),
                   child: Text("Sign Up", style: TextStyle(fontSize: 16)),
                 ),
               ),
