@@ -37,4 +37,14 @@ class DbService {
         .snapshots();
   }
 
+
+  // READ PROMOTIONS AND BANNERS FROM DB
+  Stream<QuerySnapshot> readPromos() {
+    return FirebaseFirestore.instance.collection("book_promos").snapshots();
+  }
+
+  Stream<QuerySnapshot> readBanners() {
+    return FirebaseFirestore.instance.collection("book_banners").snapshots();
+  }
+
 }

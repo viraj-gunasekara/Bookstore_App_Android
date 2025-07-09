@@ -1,3 +1,4 @@
+import 'package:bookstore_app/containers/promo_container.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
@@ -11,7 +12,30 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Best Deals",style: TextStyle(fontSize: 22,fontWeight: FontWeight.w600),),  scrolledUnderElevation: 0, forceMaterialTransparency: true,)
-    );
+  appBar: AppBar(
+    scrolledUnderElevation: 0,
+    forceMaterialTransparency: true,
+    title: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          "BookShelf by Viraj",
+          style: TextStyle(fontSize: 15, color: Colors.grey.shade800),
+        ),
+        SizedBox(height: 2),
+        Text(
+          "Best Books at Best Prices",
+          style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
+        ),
+      ],
+    ),
+  ),
+  body: Column(
+    children: [
+      PromoContainer(),
+    ],
+  ),
+);
+
   }
 }

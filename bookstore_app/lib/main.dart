@@ -1,7 +1,6 @@
 import 'package:bookstore_app/controlllers/auth_service.dart';
 import 'package:bookstore_app/firebase_options.dart';
 import 'package:bookstore_app/providers/user_provider.dart';
-import 'package:bookstore_app/views/home.dart';
 import 'package:bookstore_app/views/home_nav.dart';
 import 'package:bookstore_app/views/login.dart';
 import 'package:bookstore_app/views/signup.dart';
