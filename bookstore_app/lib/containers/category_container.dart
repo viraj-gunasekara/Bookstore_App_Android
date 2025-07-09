@@ -52,13 +52,18 @@ class CategoryButton extends StatefulWidget {
 class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(4),
-      padding: EdgeInsets.all(4),
-      height: 125,
-      width: 95,
-      decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(20)),
-      child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [Image.network(widget.imagepath, height: 50), SizedBox(height: 8), Text("${widget.name.substring(0, 1).toUpperCase()}${widget.name.substring(1)} ")]),
+    return GestureDetector(
+      onTap: ()=> Navigator.pushNamed(context,"/specific", arguments: {
+        "name":widget.name
+      }),
+      child: Container(
+        margin: EdgeInsets.all(4),
+        padding: EdgeInsets.all(4),
+        height: 125,
+        width: 95,
+        decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(20)),
+        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [Image.network(widget.imagepath, height: 50), SizedBox(height: 8), Text("${widget.name.substring(0, 1).toUpperCase()}${widget.name.substring(1)} ")]),
+      ),
     );
   }
 }

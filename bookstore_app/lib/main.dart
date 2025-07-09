@@ -4,7 +4,9 @@ import 'package:bookstore_app/providers/user_provider.dart';
 import 'package:bookstore_app/views/home_nav.dart';
 import 'package:bookstore_app/views/login.dart';
 import 'package:bookstore_app/views/signup.dart';
+import 'package:bookstore_app/views/specific_products.dart';
 import 'package:bookstore_app/views/update_profile.dart';
+import 'package:bookstore_app/views/view_book.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -30,7 +32,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(create: (context)=> UserProvider(),),
       ],
       child: MaterialApp(
-        title: 'Flutter Demo',
+        title: 'BookShelf by Viraj',
         theme: ThemeData(
           // This is the theme of your application.
           //
@@ -55,6 +57,8 @@ class MyApp extends StatelessWidget {
           "/signup": (context) => SignupPage(),
           "/home": (context) => HomeNav(),
           "/update_profile": (context) => UpdateProfile(),
+          "/specific": (context) => SpecificProducts(),
+          "/view_book": (context) => ViewBook(),
         },
       ),
     );

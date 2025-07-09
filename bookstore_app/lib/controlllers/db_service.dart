@@ -55,4 +55,14 @@ class DbService {
         .orderBy("priority", descending: true)
         .snapshots();
   }
+
+
+  // BOOKS
+  // read books of specific categories
+  Stream<QuerySnapshot> readBookItems(String category) {
+    return FirebaseFirestore.instance
+        .collection("book_items")
+        .where("category", isEqualTo: category.toLowerCase())
+        .snapshots();
+  }
 }
