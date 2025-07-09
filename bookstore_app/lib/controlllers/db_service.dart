@@ -47,4 +47,12 @@ class DbService {
     return FirebaseFirestore.instance.collection("book_banners").snapshots();
   }
 
+
+  // CATEGORIES
+  Stream<QuerySnapshot> readCategories() {
+    return FirebaseFirestore.instance
+        .collection("book_categories")
+        .orderBy("priority", descending: true)
+        .snapshots();
+  }
 }
