@@ -1,13 +1,13 @@
+import 'package:bookstore_app/controlllers/db_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthService {
   //signup - create new account using email password method
-  Future<String> createAccountWithEmail(String email, String password) async {
+  Future<String> createAccountWithEmail(String name, String email, String password) async {
     try {
-      await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: password);
+
+      await DbService().saveUserData(name: name, email: email);
 
       return "Account Created";
     } on FirebaseAuthException catch (e) {
@@ -18,10 +18,7 @@ class AuthService {
   //signin - login with email password method
   Future<String> loginWithEmail(String email, String password) async {
     try {
-      await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
+      await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: password);
 
       return "Login Successful";
     } on FirebaseAuthException catch (e) {
