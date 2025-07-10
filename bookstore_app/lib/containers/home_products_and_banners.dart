@@ -44,7 +44,7 @@ class _HomeProductsAndBannersState extends State<HomeProductsAndBanners> {
                           Column(
                             children: [
                               HomeProductsContainer(category: snapshot.data!.docs[i]["name"]),
-                              BannerContainer(image: bannerSnapshot.data!.docs[i]["image"], category: bannerSnapshot.data!.docs[i]["category"]),
+                              // BannerContainer(image: bannerSnapshot.data!.docs[i]["image"], category: bannerSnapshot.data!.docs[i]["category"]),
                             ],
                           ),
                       ],

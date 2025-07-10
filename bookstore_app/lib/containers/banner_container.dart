@@ -1,26 +1,39 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 
-class BannerContainer extends StatefulWidget {
-  final String image,category;
-  const BannerContainer({super.key, required this.image, required this.category});
+class BannerContainer extends StatelessWidget {
+  final List<String> images;
+  final String category;
 
-  @override
-  State<BannerContainer> createState() => _BannerContainerState();
-}
+  const BannerContainer({
+    super.key,
+    required this.images,
+    required this.category,
+  });
 
-class _BannerContainerState extends State<BannerContainer> {
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: (){
-           Navigator.pushNamed(context, "/specific", arguments: {
-            "name": widget.category,
-                });
-      },
-      child: Container(
-        margin:  EdgeInsets.symmetric(vertical: 8),
-        height: 200,
-        child: Image.network(widget.image,fit: BoxFit.cover,),
+    return CarouselSlider(
+      items: images
+          .map((image) => GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(context, "/specific", arguments: {
+                    "name": category,
+                  });
+                },
+                child: Image.network(
+                  image,
+                  fit: BoxFit.cover,
+                  width: double.infinity,
+                ),
+              ))
+          .toList(),
+      options: CarouselOptions(
+        autoPlay: true,
+        autoPlayInterval: Duration(seconds: 10),
+        aspectRatio: 16 / 8,
+        viewportFraction: 1,
+        enlargeCenterPage: true,
       ),
     );
   }
