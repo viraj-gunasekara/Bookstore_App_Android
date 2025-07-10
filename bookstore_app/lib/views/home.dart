@@ -1,4 +1,5 @@
 import 'package:bookstore_app/containers/category_container.dart';
+import 'package:bookstore_app/containers/home_products_and_banners.dart';
 import 'package:bookstore_app/containers/promo_container.dart';
 import 'package:flutter/material.dart';
 
@@ -31,11 +32,14 @@ class _HomePageState extends State<HomePage> {
       ],
     ),
   ),
-  body: Column(
-    children: [
-      PromoContainer(),
-      CategoryContainer(),
-    ],
+  body: SingleChildScrollView(
+    child: Column(
+      children: [
+        PromoContainer(),
+        CategoryContainer(),
+        HomeProductsAndBanners(),
+      ],
+    ),
   ),
 );
 
