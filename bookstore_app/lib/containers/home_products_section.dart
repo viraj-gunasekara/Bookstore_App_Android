@@ -142,11 +142,11 @@ class _ProductsContainerState extends State<ProductsContainer> {
                                       maxLines: 2,
                                       overflow: TextOverflow.ellipsis,
                                       style: const TextStyle(
-                                        fontSize: 13,
+                                        fontSize: 13.5,
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
-                                    const SizedBox(height: 4),
+                                    const SizedBox(height: 14),
                                     specialQuote(
                                       price: book.new_price,
                                       dis: int.parse(discountPercent(book.old_price, book.new_price)),

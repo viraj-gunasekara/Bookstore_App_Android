@@ -24,7 +24,7 @@ class _CategoryContainerState extends State<CategoryContainer> {
             return SizedBox();
           } else {
             return SizedBox(
-              height: 130,
+              height: 110,
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 padding: const EdgeInsets.symmetric(horizontal: 5),
@@ -80,8 +80,8 @@ class CategoryCircleCard extends StatelessWidget {
       child: Column(
         children: [
           Container(
-            width: 75,
-            height: 75,
+            width: 82,
+            height: 82,
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: LinearGradient(
@@ -113,7 +113,7 @@ class CategoryCircleCard extends StatelessWidget {
             child: Text(
               formattedName,
               style: const TextStyle(
-                fontSize: 12,
+                fontSize: 13.5,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.center,
