@@ -17,21 +17,41 @@ class _CategoryContainerState extends State<CategoryContainer> {
       stream: DbService().readCategories(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          List<CategoriesModel> categories = CategoriesModel.fromJsonList(snapshot.data!.docs) as List<CategoriesModel>;
+          List<CategoriesModel> categories =
+              CategoriesModel.fromJsonList(snapshot.data!.docs)
+                  as List<CategoriesModel>;
           if (categories.isEmpty) {
             return SizedBox();
           } else {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: Row(
-                children: categories.map((cat) => CategoryButton(imagepath: cat.image, name: cat.name)).toList(),
+            return SizedBox(
+              height: 110,
+              child: ListView.separated(
+                scrollDirection: Axis.horizontal,
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                separatorBuilder: (_, __) => const SizedBox(width: 12),
+                itemCount: categories.length,
+                itemBuilder: (context, index) {
+                  final cat = categories[index];
+                  return CategoryCircleCard(
+                    imagepath: cat.image,
+                    name: cat.name,
+                  );
+                },
               ),
             );
           }
         } else {
-          return Shimmer(
-            child: Container(height: 90, width: double.infinity),
-            gradient: LinearGradient(colors: [Colors.grey.shade200, Colors.white]),
+          return Shimmer.fromColors(
+            baseColor: Colors.grey.shade300,
+            highlightColor: Colors.white,
+            child: Container(
+              height: 110,
+              margin: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.grey,
+                borderRadius: BorderRadius.circular(16),
+              ),
+            ),
           );
         }
       },
@@ -39,30 +59,68 @@ class _CategoryContainerState extends State<CategoryContainer> {
   }
 }
 
-
-class CategoryButton extends StatefulWidget {
+class CategoryCircleCard extends StatelessWidget {
   final String imagepath, name;
 
-  const CategoryButton({super.key, required this.imagepath, required this.name});
+  const CategoryCircleCard({
+    super.key,
+    required this.imagepath,
+    required this.name,
+  });
 
-  @override
-  State<CategoryButton> createState() => _CategoryButtonState();
-}
-
-class _CategoryButtonState extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
+    final formattedName = "${name[0].toUpperCase()}${name.substring(1)}";
     return GestureDetector(
-      onTap: ()=> Navigator.pushNamed(context,"/specific", arguments: {
-        "name":widget.name
-      }),
-      child: Container(
-        margin: EdgeInsets.all(4),
-        padding: EdgeInsets.all(4),
-        height: 125,
-        width: 95,
-        decoration: BoxDecoration(color: Colors.grey.shade200, borderRadius: BorderRadius.circular(20)),
-        child: Column(mainAxisAlignment: MainAxisAlignment.center, crossAxisAlignment: CrossAxisAlignment.center, children: [Image.network(widget.imagepath, height: 50), SizedBox(height: 8), Text("${widget.name.substring(0, 1).toUpperCase()}${widget.name.substring(1)} ")]),
+      onTap: () => Navigator.pushNamed(
+        context,
+        "/specific",
+        arguments: {"name": name},
+      ),
+      child: Column(
+        children: [
+          Container(
+            width: 82,
+            height: 82,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: LinearGradient(
+                colors: [Colors.white, Colors.grey.shade200],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black12,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(10),
+              child: ClipOval(
+                child: Image.network(
+                  imagepath,
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 6),
+          SizedBox(
+            width: 80,
+            child: Text(
+              formattedName,
+              style: const TextStyle(
+                fontSize: 13.5,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+        ],
       ),
     );
   }
