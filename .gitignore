@@ -1,0 +1,2 @@
+# Ignore the client app when working on admin app branch
+/bookstore_app/
