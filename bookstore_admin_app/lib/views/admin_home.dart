@@ -128,34 +128,39 @@ class _AdminHomeState extends State<AdminHome> {
 
                             // 🏷️ Category labels with matching color
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: coloredEntries.map((entry) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 4),
-                                    child: Row(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Container(
-                                          width: 12,
-                                          height: 12,
-                                          margin: const EdgeInsets.only(top: 2),
-                                          decoration: BoxDecoration(shape: BoxShape.circle, color: entry.color),
+                              child: SizedBox(
+                                height: 220,
+                                child: SingleChildScrollView(
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: coloredEntries.map((entry) {
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 5),
+                                        child: Row(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                              width: 12,
+                                              height: 12,
+                                              margin: const EdgeInsets.only(top: 2),
+                                              decoration: BoxDecoration(shape: BoxShape.circle, color: entry.color),
+                                            ),
+                                            const SizedBox(width: 8),
+                                            Expanded(
+                                              child: Text(
+                                                "${entry.category} (${entry.count})",
+                                                style: const TextStyle(fontSize: 14),
+                                                softWrap: true,
+                                                overflow: TextOverflow.ellipsis,
+                                                maxLines: 2, // Limit to 2 lines max
+                                              ),
+                                            ),
+                                          ],
                                         ),
-                                        const SizedBox(width: 8),
-                                        Expanded(
-                                          child: Text(
-                                            "${entry.category} (${entry.count})",
-                                            style: const TextStyle(fontSize: 14),
-                                            softWrap: true,
-                                            overflow: TextOverflow.ellipsis,
-                                            maxLines: 2, // Limit to 2 lines max
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }).toList(),
+                                      );
+                                    }).toList(),
+                                  ),
+                                ),
                               ),
                             ),
                           ],
@@ -183,12 +188,12 @@ class _AdminHomeState extends State<AdminHome> {
                     HomeButton(name: "All Books", icon: Icons.menu_book_outlined, onTap: () => Navigator.pushNamed(context, "/books")),
                     HomeButton(name: "Categories", icon: Icons.now_widgets_outlined, onTap: () => Navigator.pushNamed(context, "/category")),
                     HomeButton(
-                      name: "Promotions",
+                      name: "Home Promotions",
                       icon: Icons.campaign_outlined,
                       onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": true}),
                     ),
                     HomeButton(
-                      name: "Banners",
+                      name: "Category Banners",
                       icon: Icons.image_outlined,
                       onTap: () => Navigator.pushNamed(context, "/promos", arguments: {"promo": false}),
                     ),
@@ -199,7 +204,7 @@ class _AdminHomeState extends State<AdminHome> {
                 Container(
                   margin: const EdgeInsets.only(top: 16),
                   width: double.infinity,
-                  child: HomeButton(name: "Book Orders", icon: Icons.format_list_bulleted, onTap: () => Navigator.pushNamed(context, "/orders"), backgroundColor: Colors.grey.shade800),
+                  child: HomeButton(name: "Book Orders", icon: Icons.format_list_bulleted, onTap: () => Navigator.pushNamed(context, "/orders"), backgroundColor: Colors.blueGrey.shade700),
                 ),
                 const SizedBox(height: 5),
               ],
