@@ -49,3 +49,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Flutter auto-generated asset icons (if using flutter_launcher_icons)
+ios/Runner/Assets.xcassets/AppIcon.appiconset/Icon-App-*.png

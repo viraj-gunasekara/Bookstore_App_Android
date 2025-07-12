@@ -1,0 +1,14 @@
+# Ignore the client app when working on admin app branch
+#/bookstore_app/
+
+# Ignore the admin app when working on client app branch
+/bookstore_admin_app/
+
+# Flutter generated desktop files
+bookstore_app/linux/flutter/
+bookstore_app/windows/flutter/
+bookstore_app/macos/Flutter/
+
+bookstore_admin_app/linux/flutter/
+bookstore_admin_app/windows/flutter/
+bookstore_admin_app/macos/Flutter/
